@@ -49,6 +49,7 @@ function startCamera() {
 mobilenet.load().then((m) => {
   model = m;
   document.body.classList.remove('loading');
+  currentCamera = 'rear'; 
   startCamera();
 }).catch((error) => {
   console.error('Error al cargar el modelo:', error);
