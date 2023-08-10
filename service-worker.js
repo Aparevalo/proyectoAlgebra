@@ -3,7 +3,7 @@ const urlsToCache = [
   '/',
   'index.html',
   'identificador.html',
-  'icon.png'
+  'img/icon.png'
 ];
 
 self.addEventListener('install', function(event) {
