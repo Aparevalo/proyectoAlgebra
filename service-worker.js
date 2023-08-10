@@ -1,6 +1,5 @@
 const CACHE_NAME = 'images-pwa-cache-v1';
 const urlsToCache = [
-  '/',
   'index.html',
   'identificador.html',
   'css/app.css',
