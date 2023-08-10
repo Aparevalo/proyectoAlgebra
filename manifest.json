@@ -2,7 +2,7 @@
     "name": "Identificador Imagenes",
     "short_name": "Identificador",
     "description": "Una aplicación web progresiva para el reconocimiento de Imagenes",
-    "start_url": "/index.html",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#f8f9fa",
     "theme_color": "#343a40",
