@@ -3,8 +3,8 @@ const canvas = document.getElementById('canvas');
 const description = document.getElementById('prediction');
 const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
 const inputError = document.getElementById('input-error');
-
 let model;
+let currentCamera;
 
 function displayDescription(predictions) {
   const result = predictions.sort((a, b) => a.probability > b.probability)[0];
@@ -30,26 +30,42 @@ function classifyImage() {
 }
 
 function startCamera() {
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.play();
-        classifyImage();
+  if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        if (videoDevices.length === 0) {
+          console.error('No se encontraron cámaras disponibles.');
+          return;
+        }
+
+        const facingMode = currentCamera === 'rear' ? 'environment' : 'user';
+        const constraints = {
+          video: { facingMode: { exact: facingMode } }
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+          .then((stream) => {
+            video.srcObject = stream;
+            video.play();
+            classifyImage();
+          })
+          .catch((error) => {
+            console.error('Error al acceder a la cámara:', error);
+          });
       })
       .catch((error) => {
-        console.error('Error al acceder a la cámara:', error);
+        console.error('Error al enumerar los dispositivos:', error);
       });
   } else {
-    console.error('El navegador no admite la API getUserMedia');
+    console.error('El navegador no admite la API getUserMedia o enumerateDevices');
   }
 }
 
 mobilenet.load().then((m) => {
   model = m;
   document.body.classList.remove('loading');
-  currentCamera = 'rear'; 
+  currentCamera = 'rear'; // Establece la cámara trasera como predeterminada
   startCamera();
 }).catch((error) => {
   console.error('Error al cargar el modelo:', error);
