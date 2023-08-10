@@ -1,8 +1,11 @@
-const CACHE_NAME = 'imagen-pwa-cache-v1';
+const CACHE_NAME = 'images-pwa-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/identificador.html',
+  '/css/app.css',
+  '/js/app.js',
+  '/js/register-sw.js',
   '/img/icon.png'
 ];
 
@@ -24,5 +27,21 @@ self.addEventListener('fetch', function(event) {
         }
         return fetch(event.request);
       })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  const cacheWhitelist = [CACHE_NAME];
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
