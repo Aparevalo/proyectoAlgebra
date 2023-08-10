@@ -1,9 +1,9 @@
-const CACHE_NAME = 'my-pwa-cache-v1';
+const CACHE_NAME = 'imagen-pwa-cache-v1';
 const urlsToCache = [
   '/',
-  'index.html',
-  'identificador.html',
-  'img/icon.png'
+  '/index.html',
+  '/identificador.html',
+  '/img/icon.png'
 ];
 
 self.addEventListener('install', function(event) {
